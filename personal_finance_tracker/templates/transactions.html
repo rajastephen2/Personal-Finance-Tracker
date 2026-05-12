@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Transactions</title>
+<link rel="stylesheet" href="/static/style.css">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+
+    .navbar {
+        background: #2c3e50;
+        padding: 12px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .navbar a:hover {
+        color: #f39c12;
+    }
+
+    .navbar button {
+        background: #e74c3c;
+        border: none;
+        padding: 8px 15px;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .navbar button:hover {
+        background: #c0392b;
+    }
+
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h2 {
+        margin-top: 20px;
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin: 15px 0;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background: #3498db;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #2980b9;
+        transform: scale(1.05);
+    }
+
+    .filters {
+        margin: 20px auto;
+        width: 50%;
+        text-align: center;
+    }
+
+    .filters select {
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        transition: 0.3s;
+    }
+
+    .filters select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 6px rgba(52,152,219,0.5);
+        outline: none;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background: #27ae60;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    tr:hover {
+        background: #d1f2eb;
+        transition: 0.3s;
+    }
+
+    a {
+        text-decoration: none;
+        color: #e74c3c;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    a:hover {
+        color: #c0392b;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div>
+        <a href="/">Home</a>
+        <a href="/transactions_page">Transactions</a>
+        <a href="/report">Monthly Report</a>
+        <a href="/download_pdf">Download PDF</a>
+    </div>
+    <div>
+        <span>👤 {{ user }}</span>
+        <a href="/logout" style="margin-left:10px;">
+            <button>Logout</button>
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>📋 Transactions</h2>
+    <button onclick="goBack()">⬅ Back</button>
+
+    <div class="filters">
+        <select id="typeFilter" onchange="loadTransactions()">
+            <option value="all">All</option>
+            <option value="income">Income</option>
+            <option value="outcome">Outcome</option>
+        </select>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Dynamic rows injected here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="/static/script.js"></script>
+<script>
+function goBack(){
+    window.location.href = "/";
+}
+</script>
+
+</body>
+</html>

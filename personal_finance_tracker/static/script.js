@@ -1,0 +1,174 @@
+function addTransaction() {
+
+    let type = document.getElementById("type").value;
+    let category = document.getElementById("category").value;
+    let amount = document.getElementById("amount").value;
+
+    if (!amount) {
+        alert("Enter amount!");
+        return;
+    }
+
+    fetch("/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ type, category, amount })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert("Added ✅");
+
+        loadTransactions();
+        loadSummary();
+        loadMonthlyReport();
+    });
+}
+
+
+
+function loadTransactions() {
+
+    let monthEl = document.getElementById("monthFilter");
+    let typeEl = document.getElementById("typeFilter");
+
+    let month = monthEl ? monthEl.value : "";
+    let type = typeEl ? typeEl.value : "all";
+
+    fetch(`/transactions?month=${month}&type=${type}`)
+    .then(res => res.json())
+    .then(data => {
+
+        let table = document.getElementById("tableBody");
+
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        if (!data || data.length === 0) {
+            table.innerHTML = "<tr><td colspan='5'>No Data</td></tr>";
+            return;
+        }
+
+        data.forEach(t => {
+            table.innerHTML += `
+            <tr>
+                <td>${t.date}</td>
+                <td style="color:${t.type==='income' ? 'green' : 'red'}">
+                    ${t.type}
+                </td>
+                <td>${t.category}</td>
+                <td>₹${t.amount}</td>
+                <td>
+                    <a href="/delete/${t.id}">🗑</a>
+                </td>
+            </tr>`;
+        });
+    })
+    .catch(err => console.log("Error:", err));
+}
+
+
+
+function loadSummary() {
+
+    fetch("/report_summary")
+    .then(res => res.json())
+    .then(data => {
+
+        if (!document.getElementById("income")) return;
+
+        document.getElementById("income").innerText = "₹" + data.income;
+        document.getElementById("expense").innerText = "₹" + data.expense;
+        document.getElementById("balance").innerText = "₹" + data.balance;
+    });
+}
+
+
+
+function loadMonthlyReport() {
+
+    fetch("/monthly_report")
+    .then(res => res.json())
+    .then(data => {
+
+        let table = document.getElementById("monthlyTable");
+
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        if (!data || data.length === 0) {
+            table.innerHTML = "<tr><td colspan='4'>No Data</td></tr>";
+            return;
+        }
+
+        data.forEach(m => {
+            table.innerHTML += `
+            <tr>
+                <td>${m.month}</td>
+                <td>₹${m.income}</td>
+                <td>₹${m.expense}</td>
+                <td>₹${m.balance}</td>
+            </tr>`;
+        });
+
+        drawChart(data);
+    });
+}
+
+
+let chartInstance;
+
+function drawChart(data) {
+
+    let ctx = document.getElementById("chart");
+
+    if (!ctx) return;
+
+    let labels = data.map(d => d.month);
+    let income = data.map(d => d.income);
+    let expense = data.map(d => d.expense);
+
+  
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Income",
+                    data: income,
+                    backgroundColor: "green"
+                },
+                {
+                    label: "Outcome",
+                    data: expense,
+                    backgroundColor: "red"
+                }
+            ]
+        }
+    });
+}
+
+
+
+window.onload = function () {
+
+    if (document.getElementById("tableBody")) {
+        loadTransactions();
+    }
+
+    if (document.getElementById("monthlyTable")) {
+        loadMonthlyReport();
+    }
+
+    if (document.getElementById("income")) {
+        loadSummary();
+    }
+};

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Download PDF</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+
+    .navbar {
+        background: #2c3e50;
+        padding: 12px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .navbar a:hover {
+        color: #f39c12;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+        color: #2c3e50;
+    }
+
+    .container {
+        width: 60%;
+        margin: 40px auto;
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    button {
+        padding: 12px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    .back-btn {
+        background: #95a5a6;
+        color: white;
+    }
+
+    .back-btn:hover {
+        background: #7f8c8d;
+    }
+
+    .download-btn {
+        background: #27ae60;
+        color: white;
+    }
+
+    .download-btn:hover {
+        background: #1e8449;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(-20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div>
+        <a href="/">Home</a>
+        <a href="/transactions_page">Transactions</a>
+        <a href="/report_page">Monthly Report</a>
+        <a href="/download_pdf_page">Download PDF</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>📄 Download Report</h2>
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <br><br>
+    <a href="/download_pdf">
+        <button class="download-btn">Download PDF Report</button>
+    </a>
+</div>
+
+<script>
+function goBack(){
+    window.location.href = "/";
+}
+</script>
+
+</body>
+</html>
